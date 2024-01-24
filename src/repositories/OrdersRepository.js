@@ -38,18 +38,18 @@ class OrdersRepository {
         const newOrder = await knex("orders").where({ id }).first()
 
         if(newIngredients){
-            Promise.all(ingredients.map(async ingredient => {
-                const { id } = ingredient
-                await knex("ingredients").where({ id }).del()
-            }))
+            const ingredientsRemoveId = ingredients.map(name => name.id)
+            await knex("ingredients").whereIn("id", ingredientsRemoveId).del()
 
-            Promise.all(newIngredients.map(async name => {
-                await knex("ingredients").insert({
+            const ingredientsInsert = newIngredients.map(name => {
+                return {
                     user_id: user.id,
                     order_id: newOrder.id,
                     name,
-                })
-            }))
+                }
+            })
+            await knex("ingredients").insert(ingredientsInsert)
+        
         }
     }
 
