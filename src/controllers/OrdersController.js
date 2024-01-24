@@ -1,10 +1,10 @@
 const OrdersRepository = require("../repositories/OrdersRepository")
 const UserRepository = require("../repositories/UserRepository")
-const OrderCreateService = require("../services/OrderCreateService")
-const OrderDeleteService = require("../services/OrderDeleteService")
-const OrdersIndexService = require("../services/OrdersIndexService")
-const OrdersShowService = require("../services/OrderShowService")
-const OrdersUpdateService = require("../services/OrderUpdateService")
+const OrderCreateService = require("../services/Order/OrderCreateService")
+const OrderDeleteService = require("../services/Order/OrderDeleteService")
+const OrdersIndexService = require("../services/Order/OrdersIndexService")
+const OrdersShowService = require("../services/Order/OrderShowService")
+const OrdersUpdateService = require("../services/Order/OrderUpdateService")
 
 class OrdersController {
     async create(req, res) {

@@ -1,9 +1,17 @@
 const knex = require("../database")
 
 class UserRepository {
-    async find(id){
+    async findById(id){
         const user = await knex("users").where({ id }).first()
+        if(!user){
+            return null
+        }
+        
+        return user
+    }
 
+    async findByEmail(email){
+        const user = await knex("users").where({ email }).first()
         if(!user){
             return null
         }

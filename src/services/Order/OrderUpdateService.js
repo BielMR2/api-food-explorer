@@ -1,4 +1,4 @@
-const AppError = require("../utils/AppError")
+const AppError = require("../../utils/AppError")
 
 class OrdersUpdateService {
     constructor(orderRepository, userRepository) {
@@ -8,7 +8,7 @@ class OrdersUpdateService {
 
     async execute({ user_id, order_id, title, description, category, price, ingredients }){
         const [user, order] = await Promise.all([
-            this.userRepository.find(user_id),
+            this.userRepository.findById(user_id),
             this.orderRepository.show(order_id)
         ]);
     

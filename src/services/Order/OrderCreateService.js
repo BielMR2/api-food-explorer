@@ -1,5 +1,5 @@
 const { hash } = require("bcryptjs")
-const AppError = require("../utils/AppError")
+const AppError = require("../../utils/AppError")
 
 class UserCreateService {
     constructor(orderRepository, userRepository){
@@ -8,7 +8,7 @@ class UserCreateService {
     }
 
     async execute({ user_id, title, description, category, price, ingredients }){
-        const checkUserExists = await this.userRepository.find(user_id)
+        const checkUserExists = await this.userRepository.findById(user_id)
 
         if (!checkUserExists) {
             throw new AppError("Usuário não encontrado.")

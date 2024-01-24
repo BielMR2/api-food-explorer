@@ -1,41 +1,19 @@
-const knex = require("../database")
-const AppError = require("../utils/AppError")
-const { compare } = require("bcryptjs")
-const authConfig = require("../Config/auth")
-const { sign } = require("jsonwebtoken")
+const UserRepository = require("../repositories/UserRepository")
+const UserCreateSessionService = require("../services/User/UserCreateSessionService")
 
 class SessionsController {
     async create(req, res) {
         const { email, password } = req.body
 
-        const user = await knex("users").where({ email }).first()
+        const userRepository = new UserRepository()
+        const userCreateSessionService = new UserCreateSessionService(userRepository)
 
-        if(!user) {
-            throw new AppError("Email e/ou senha incorreta", 401)
+        try {
+            const user = await userCreateSessionService.execute({ email, password, res })
+            res.json({ message: 'Usuário validado com sucesso ', user })
+        } catch (error) {
+            return res.status(400).json({ error });
         }
-
-        const passwordMatch = await compare(password, user.password)
-
-        if(!passwordMatch) {
-            throw new AppError("Email e/ou senha incorreta", 401)
-        }
-
-        const { secret, expiresIn } = authConfig.jwt
-        const token = sign({}, secret, {
-            subject: String(user.id),
-            expiresIn
-        })
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: "none",
-            secure: true,
-            maxAge: 60 * 60 * 1000
-        })
-
-        delete user.password
-
-        return res.json({ user })
     }
 }
 
