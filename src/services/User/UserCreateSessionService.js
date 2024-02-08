@@ -10,6 +10,7 @@ class UserCreateSessionService {
 
     async execute({ email, password, res }){
         const user = await this.userRepository.findByEmail(email)
+
         if(!user) {
             throw new AppError("Email e/ou senha incorreta", 401)
         }
@@ -33,7 +34,7 @@ class UserCreateSessionService {
         })
 
         delete user.password
-        
+
         return user
     }
 }

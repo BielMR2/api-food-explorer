@@ -1,4 +1,3 @@
-const { hash } = require("bcryptjs")
 const AppError = require("../../utils/AppError")
 
 class UserCreateService {
@@ -8,10 +7,14 @@ class UserCreateService {
     }
 
     async execute({ user_id, title, description, category, price, ingredients }){
-        const checkUserExists = await this.userRepository.findById(user_id)
+        const user = await this.userRepository.findById(user_id)
 
-        if (!checkUserExists) {
+        if (!user) {
             throw new AppError("Usuário não encontrado.")
+        }
+
+        if(user.role !==  "admin"){
+            throw new AppError("Apenas usuário admin pode criar um pedido")
         }
 
         const orderCreated = await this.orderRepository.create({ user_id, title, description, category, price, ingredients })

@@ -4,10 +4,10 @@ const UserCreateSessionService = require("../services/User/UserCreateSessionServ
 class SessionsController {
     async create(req, res) {
         const { email, password } = req.body
-
+        
         const userRepository = new UserRepository()
         const userCreateSessionService = new UserCreateSessionService(userRepository)
-
+        
         try {
             const user = await userCreateSessionService.execute({ email, password, res })
             res.json({ message: 'Usuário validado com sucesso ', user })

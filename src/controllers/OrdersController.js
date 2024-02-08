@@ -74,8 +74,8 @@ class OrdersController {
         const ordersShowService = new OrdersShowService(ordersRepository)
 
         try {
-            const order = await ordersShowService.execute({ id })
-            return res.json(order)
+            const orders = await ordersShowService.execute({ id })
+            return res.json(orders)
         } catch (error) {
             return res.status(400).json({ error });
         }

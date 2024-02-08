@@ -1,4 +1,4 @@
-exports.up = knex => knex.schema.createTable("favorites", table => {
+exports.up = knex => knex.schema.createTable("cart", table => {
     table.increments("id");
 
     table.integer("order_id").references("id").inTable("orders").onDelete("CASCADE");
@@ -6,4 +6,4 @@ exports.up = knex => knex.schema.createTable("favorites", table => {
 });
 
 
-exports.down = knex => knex.schema.dropTable("favorites");
+exports.down = knex => knex.schema.dropTable("cart");

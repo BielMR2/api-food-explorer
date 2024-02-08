@@ -2,6 +2,7 @@ const knex = require("../database")
 
 class OrdersRepository {
     async create({ user_id, title, description, category, price, ingredients }){  
+        
         const [order_id] = await knex("orders").insert({ 
             user_id,
             title,
@@ -18,9 +19,10 @@ class OrdersRepository {
                     name,
                 }
             })
-
             await knex("ingredients").insert(ingredientsInsert)
         }
+
+        return order_id
     }
 
     async update({ order, user }){
@@ -32,7 +34,8 @@ class OrdersRepository {
             title,
             price,
             description,
-            category, 
+            category,
+            updated_at: knex.fn.now() 
         })
 
         const newOrder = await knex("orders").where({ id }).first()
@@ -82,6 +85,16 @@ class OrdersRepository {
         }));
     
         return ordersWithIngredients;
+    }
+
+    async findByUser_Id(user_id) {
+        const orders = await("orders").where({ user_id })
+
+        if(orders.length === 0){
+            return null
+        }
+
+        return orders
     }
 }
 

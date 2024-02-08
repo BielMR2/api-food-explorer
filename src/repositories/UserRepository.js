@@ -12,6 +12,7 @@ class UserRepository {
 
     async findByEmail(email){
         const user = await knex("users").where({ email }).first()
+
         if(!user){
             return null
         }
